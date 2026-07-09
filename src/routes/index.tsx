@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ImageFrame } from "@/components/ImageFrame";
 import { Star, MapPin, Clock, Instagram, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import logoAsset from "@/assets/bloom-boom-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -9,27 +10,20 @@ export const Route = createFileRoute("/")({
 
 const drinks = [
   {
-    name: "Rose Velvet Latte",
-    note: "Bulgarian rose · white chocolate · oat",
-    price: "€6.20",
+    name: "Erdbeer-Matcha",
+    note: "Unser Signature Drink. Frisch, cremig & wunderschön.",
+    price: "3,70 €",
   },
   {
-    name: "Matcha Cloud",
-    note: "Ceremonial matcha · vanilla foam · honey",
-    price: "€5.80",
+    name: "Iced Caffe Latte",
+    note: "Perfekt geröstet, eiskalt serviert.",
+    price: "3,70 €",
   },
   {
-    name: "Peach Blossom Tea",
-    note: "White peach · osmanthus · sparkling",
-    price: "€5.40",
+    name: "Hojicha Latte",
+    note: "Für Momente der absoluten Ruhe.",
+    price: "3,50 €",
   },
-];
-
-const treats = [
-  "Pistachio Rose Cake",
-  "Strawberry Cloud Tart",
-  "Honey Yuzu Madeleine",
-  "Vanilla Bean Canelé",
 ];
 
 const gallery: Array<{ ratio: "1/1" | "4/5" | "16/9" | "3/4"; label: string }> = [
@@ -45,18 +39,30 @@ const gallery: Array<{ ratio: "1/1" | "4/5" | "16/9" | "3/4"; label: string }> =
 
 const quotes = [
   {
-    text: "It felt like stepping into a soft dream. Every corner is a photograph waiting to happen.",
-    name: "Sofia M.",
+    text: "Die Atmosphäre ist unglaublich gemütlich – alles im süßen, mädchenhaften Stil gestaltet, als wäre es direkt von Pinterest inspiriert.",
+    name: "Sofia S.",
   },
   {
-    text: "The Rose Velvet Latte is unlike anything else in the city. I keep coming back — for the light, the calm, the flowers.",
-    name: "Amélie R.",
+    text: "Der beste Matcha in Chemnitz. Dazu ist der Laden auch noch extrem günstig. 10/10 Erlebnis!",
+    name: "DML",
   },
   {
-    text: "A tiny piece of Paris tucked into our neighborhood. I could stay for hours.",
-    name: "Lina K.",
+    text: "Wunderbar. Man kommt rein und wird von Barista Irina direkt mit einem Lächeln empfangen.",
+    name: "Sophia O.",
   },
 ];
+
+function Logo({ className = "" }: { className?: string }) {
+  return (
+    <img
+      src={logoAsset.url}
+      alt="Bloom Boom"
+      className={className}
+      loading="eager"
+      decoding="async"
+    />
+  );
+}
 
 function Landing() {
   return (
@@ -76,10 +82,10 @@ function Landing() {
 
 function Header() {
   return (
-    <header className="fixed left-1/2 top-6 z-50 w-[min(94%,1100px)] -translate-x-1/2 rounded-full glass px-6 py-3 md:px-8 md:py-4">
+    <header className="fixed left-1/2 top-6 z-50 w-[min(94%,1100px)] -translate-x-1/2 rounded-full glass px-6 py-3 md:px-8 md:py-3">
       <nav className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 md:grid-cols-3">
-        <a href="#" className="font-serif text-xl italic tracking-tight md:text-2xl">
-          bloom&nbsp;boom
+        <a href="#" className="flex items-center" aria-label="Bloom Boom — Home">
+          <Logo className="h-8 w-auto md:h-10" />
         </a>
         <ul className="hidden justify-center gap-8 text-xs uppercase tracking-[0.22em] text-foreground/70 md:flex">
           <li><a href="#drinks" className="hover:text-foreground">Drinks</a></li>
@@ -92,7 +98,7 @@ function Header() {
             href="#visit"
             className="rounded-full bg-accent px-5 py-2 text-xs uppercase tracking-[0.2em] text-accent-foreground transition hover:brightness-95"
           >
-            Reserve
+            Besuchen
           </a>
         </div>
       </nav>
@@ -112,22 +118,21 @@ function Hero() {
       <div className="relative z-10 mx-auto flex min-h-[80vh] max-w-4xl flex-col items-center justify-center text-center">
         <div className="glass rounded-[2.5rem] px-8 py-14 md:px-16 md:py-20">
           <p className="mb-6 text-xs uppercase tracking-[0.4em] text-foreground/60">
-            Boutique Café · Est. 2024
+            Boutique Café · Chemnitz
           </p>
           <h1 className="font-serif text-5xl leading-[1.05] md:text-7xl lg:text-8xl">
-            Where every sip <br />
-            <em className="font-normal italic">feels like petals.</em>
+            Chemnitz' First <br />
+            <em className="font-normal italic">Pinterest Café.</em>
           </h1>
           <p className="mx-auto mt-8 max-w-md text-sm leading-relaxed text-foreground/70 md:text-base">
-            A quiet, blooming corner for slow mornings, soft light and drinks
-            crafted like little love letters.
+            Matcha, Coffee & Art. Ein Ort, der sich anfühlt wie eine Umarmung.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <a
               href="#drinks"
               className="rounded-full bg-accent px-8 py-4 text-xs uppercase tracking-[0.24em] text-accent-foreground transition hover:brightness-95"
             >
-              Explore the menu
+              Menu entdecken
             </a>
             <a
               href="#visit"
@@ -152,7 +157,7 @@ function TrustBar() {
           ))}
         </div>
         <p className="text-xs uppercase tracking-[0.28em] text-foreground/60">
-          Loved by 2,400+ guests · Featured in Kinfolk & Cereal
+          5.0 ★ aus 67 Bewertungen – Der beste Matcha in Chemnitz.
         </p>
       </div>
     </section>
@@ -169,7 +174,7 @@ function Drinks() {
           </p>
           <h2 className="font-serif text-4xl italic md:text-6xl">The Art of Drinks</h2>
           <p className="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-foreground/60 md:text-base">
-            Three signatures, composed like perfumes — a top note, a heart, a lingering finish.
+            Drei Signatures – gemacht mit Zeit, guten Zutaten und einer ordentlichen Portion Liebe.
           </p>
         </div>
 
@@ -207,25 +212,16 @@ function SweetTreats() {
             Chapter II
           </p>
           <h2 className="font-serif text-4xl italic leading-tight md:text-6xl">
-            Sweet, <br />soft, <br />seasonal.
+            Handgemachte <br />Kunstwerke.
           </h2>
           <p className="mt-8 text-sm leading-relaxed text-foreground/70 md:text-base">
-            Small batches, made each morning with rose water, matcha, stone fruit
-            and lots of patience.
+            Jedes Detail ist pure Liebe. Probier unser berüchtigtes{" "}
+            <em className="italic">Matcha Strawberry Tiramisu</em> (3,00 €) oder frische Mochi.
+            Fast zu schön, um sie zu essen.
           </p>
-          <ul className="mt-12 space-y-5">
-            {treats.map((t) => (
-              <li
-                key={t}
-                className="flex items-center justify-between border-b border-foreground/10 pb-4 font-serif text-lg italic md:text-xl"
-              >
-                <span>{t}</span>
-                <span className="text-xs uppercase not-italic tracking-[0.25em] text-foreground/50">
-                  Daily
-                </span>
-              </li>
-            ))}
-          </ul>
+          <p className="mt-8 text-xs uppercase tracking-[0.3em] text-foreground/50">
+            Für einen schmalen Taler – täglich frisch.
+          </p>
         </div>
       </div>
     </section>
@@ -311,46 +307,47 @@ function Visit() {
           <p className="mb-4 text-xs uppercase tracking-[0.4em] text-foreground/60">
             Come by
           </p>
-          <h2 className="font-serif text-4xl italic md:text-6xl">Visit us</h2>
+          <h2 className="font-serif text-4xl italic md:text-6xl">
+            Komm auf einen Matcha vorbei.
+          </h2>
         </div>
 
         <div className="grid gap-14 rounded-[2.5rem] bg-cream p-10 md:grid-cols-2 md:p-16">
           <div className="space-y-10">
             <div>
               <div className="mb-3 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-foreground/60">
-                <MapPin className="h-4 w-4" strokeWidth={1.5} /> Address
+                <MapPin className="h-4 w-4" strokeWidth={1.5} /> Adresse
               </div>
               <p className="font-serif text-xl italic md:text-2xl">
-                Blütenstraße 12 <br /> 80799 München
+                Moritzstraße 20 (im TIETZ) <br /> 09111 Chemnitz
               </p>
             </div>
 
             <div>
               <div className="mb-3 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-foreground/60">
-                <Clock className="h-4 w-4" strokeWidth={1.5} /> Hours
+                <Clock className="h-4 w-4" strokeWidth={1.5} /> Öffnungszeiten
               </div>
               <ul className="space-y-2 font-serif text-lg italic md:text-xl">
                 <li className="flex justify-between border-b border-foreground/10 pb-2">
-                  <span>Mon — Fri</span><span>8 — 18</span>
-                </li>
-                <li className="flex justify-between border-b border-foreground/10 pb-2">
-                  <span>Sat</span><span>9 — 19</span>
+                  <span>Mo — Fr</span><span>09:30 — 19:00</span>
                 </li>
                 <li className="flex justify-between">
-                  <span>Sun</span><span>10 — 17</span>
+                  <span>Sa</span><span>11:30 — 19:00</span>
                 </li>
               </ul>
             </div>
 
             <a
-              href="#"
-              className="inline-flex rounded-full bg-cocoa px-8 py-4 text-xs uppercase tracking-[0.24em] text-primary-foreground transition hover:brightness-110"
+              href="https://www.instagram.com/bloom.boom.chemnitz"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-cocoa px-8 py-4 text-xs uppercase tracking-[0.24em] text-primary-foreground transition hover:brightness-110"
             >
-              Reserve a table
+              <Instagram className="h-4 w-4" strokeWidth={1.5} /> Folge uns
             </a>
           </div>
 
-          <ImageFrame ratio="4/5" label="Café Exterior · 4:5" />
+          <ImageFrame ratio="4/5" label="Café · 4:5" />
         </div>
       </div>
     </section>
@@ -361,15 +358,17 @@ function Footer() {
   return (
     <footer className="px-4 pb-16 pt-8 md:px-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 border-t border-foreground/10 pt-10 md:flex-row">
-        <p className="font-serif text-lg italic">bloom boom</p>
+        <Logo className="h-8 w-auto" />
         <p className="text-[11px] uppercase tracking-[0.3em] text-foreground/50">
-          © {new Date().getFullYear()} · Made with soft hands
+          © {new Date().getFullYear()} · Made with soft hands in Chemnitz
         </p>
         <a
-          href="#"
+          href="https://www.instagram.com/bloom.boom.chemnitz"
+          target="_blank"
+          rel="noreferrer"
           className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-foreground/60 hover:text-foreground"
         >
-          <Instagram className="h-4 w-4" strokeWidth={1.5} /> @bloomboom
+          <Instagram className="h-4 w-4" strokeWidth={1.5} /> @bloom.boom.chemnitz
         </a>
       </div>
     </footer>
