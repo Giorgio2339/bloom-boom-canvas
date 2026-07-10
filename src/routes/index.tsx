@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ImageFrame } from "@/components/ImageFrame";
 import { Reveal } from "@/components/Reveal";
-import { MapPin, Clock, Instagram, ChevronLeft, ChevronRight, Quote, Navigation } from "lucide-react";
-import { useState } from "react";
+import { MapPin, Clock, Instagram, ChevronLeft, ChevronRight, Quote, Navigation, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import logoAsset from "@/assets/bloom-boom-logo.png.asset.json";
 
 import matchaMenu from "@/assets/menu/matcha.jpg.asset.json";
@@ -16,12 +16,20 @@ import creamMatchaPhoto from "@/assets/photos/cream-matcha.png.asset.json";
 import latteFlowersPhoto from "@/assets/photos/latte-flowers.png.asset.json";
 import pinkMatchaPhoto from "@/assets/photos/pink-matcha.png.asset.json";
 
+import galleryTreats from "@/assets/photos/gallery-treats.png.asset.json";
+import galleryMatchaHand from "@/assets/photos/gallery-matcha-hand.png.asset.json";
+import galleryIcedFlowers from "@/assets/photos/gallery-iced-flowers.png.asset.json";
+import galleryPinkDrink from "@/assets/photos/gallery-pink-drink.png.asset.json";
+import storefront from "@/assets/photos/storefront.png.asset.json";
+
 export const Route = createFileRoute("/")({
   component: Landing,
 });
 
 const MAPS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=Bloom+Boom+Moritzstra%C3%9Fe+20+09111+Chemnitz";
+const INSTAGRAM_URL = "https://www.instagram.com/bloom.boom.chemnitz";
+const TIKTOK_URL = "https://www.tiktok.com/@bloom.boom.chemnitz";
 
 const drinks = [
   {
@@ -52,31 +60,57 @@ const menuCards = [
   { src: mojitoMenu.url, title: "Mojitos", note: "Alkoholfrei · immer frisch" },
 ];
 
+// Gallery — intentional mix of new hero shots + existing photos in Pinterest style
 const gallery: Array<{ ratio: "1/1" | "4/5" | "16/9" | "3/4"; src?: string; label: string }> = [
-  { ratio: "4/5", src: pinkMatchaPhoto.url, label: "Pink Matcha" },
+  { ratio: "4/5", src: galleryPinkDrink.url, label: "Berry Matcha Layers" },
   { ratio: "1/1", src: creamMatchaPhoto.url, label: "Cream Matcha" },
-  { ratio: "4/5", src: cupPhoto.url, label: "To Go" },
+  { ratio: "4/5", src: galleryMatchaHand.url, label: "Under the flower ceiling" },
+  { ratio: "3/4", src: galleryTreats.url, label: "Sweet Table" },
   { ratio: "1/1", src: latteFlowersPhoto.url, label: "Latte & Flowers" },
-  { ratio: "4/5", label: "Flower Ceiling" },
-  { ratio: "3/4", label: "Bouquet" },
-  { ratio: "1/1", label: "Menu Card" },
-  { ratio: "4/5", label: "Terrace" },
+  { ratio: "4/5", src: galleryIcedFlowers.url, label: "Iced & Blooming" },
+  { ratio: "4/5", src: pinkMatchaPhoto.url, label: "Pink Matcha" },
+  { ratio: "1/1", src: cupPhoto.url, label: "To Go" },
 ];
 
 const quotes = [
   {
-    text: "Die Atmosphäre ist unglaublich gemütlich – alles im süßen, mädchenhaften Stil gestaltet, als wäre es direkt von Pinterest inspiriert.",
-    name: "Sofia S.",
+    text: "Ich war in diesem Café und war wirklich begeistert! Die Atmosphäre ist unglaublich gemütlich und wunderschön – alles ist im süßen, mädchenhaften Stil gestaltet, als wäre es direkt von Pinterest inspiriert.",
+    name: "София Стефанюк",
     role: "Google Review",
   },
   {
-    text: "Der beste Matcha in Chemnitz. Dazu ist der Laden auch noch extrem günstig. 10/10 Erlebnis!",
-    name: "DML",
+    text: "Moderne, coole und innovative Getränke. Von Matcha, Hojicha und Kaffee bis zu leckeren Cocktails schmeckt alles sehr gut. So etwas gibt es in Chemnitz nur ein Mal. Der Ort und das Menü werden mit viel Liebe gestaltet.",
+    name: "Julian Junghänel",
     role: "Google Review",
   },
   {
-    text: "Wunderbar. Man kommt rein und wird von Barista Irina direkt mit einem Lächeln empfangen.",
-    name: "Sophia O.",
+    text: "Sehr süßes und stilvolles Café mit liebevoller Atmosphäre. Die Getränke sind frisch, kreativ und richtig lecker – besonders der Matcha ist ein Highlight. Perfekt für eine kleine Pause. Komme gerne wieder!",
+    name: "Алина Щербак",
+    role: "Google Review",
+  },
+  {
+    text: "Meiner Meinung nach der beste Matcha-Spot in Chemnitz. Preis-Leistung einfach top und sehr, sehr freundliches Personal.",
+    name: "Vanessa Weiß",
+    role: "Google Review",
+  },
+  {
+    text: "Man kommt rein und wird mit einem Lächeln empfangen. Die Getränke sind super, auf Wünsche wird eingegangen. Klein, aber fein – es lohnt sich sehr.",
+    name: "Sophia Oldag",
+    role: "Google Review",
+  },
+  {
+    text: "Kleiner Laden mit richtig gutem Kaffee und sehr leckerem Gebäck. Die Auswahl ist bewusst überschaubar, dafür merkt man sofort die Qualität.",
+    name: "WhiteFoxy",
+    role: "Google Review",
+  },
+  {
+    text: "Ich war zunächst skeptisch, doch nach dem ersten Schluck war diese Skepsis sofort verschwunden. Wirklich tolle selbstgemachte Limonade und eine sehr positive Erfahrung.",
+    name: "Mr. Mampfy",
+    role: "Google Review",
+  },
+  {
+    text: "Ich bin rundum zufrieden und komme super gerne hierher. Faire Preise für das, was man bekommt. Ich lieb's. Definitiv einen Besuch wert!",
+    name: "Sophia Müller",
     role: "Google Review",
   },
 ];
@@ -90,6 +124,25 @@ function Logo({ className = "" }: { className?: string }) {
       loading="eager"
       decoding="async"
     />
+  );
+}
+
+// Elegant eyebrow — replaces "Chapter I / II / III" with a soft ornamental label
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mb-5 flex items-center justify-center gap-4 text-[10px] uppercase tracking-[0.5em] text-foreground/50">
+      <span className="h-px w-8 bg-foreground/25" />
+      <span>{children}</span>
+      <span className="h-px w-8 bg-foreground/25" />
+    </div>
+  );
+}
+
+function TikTokIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+    </svg>
   );
 }
 
@@ -141,16 +194,18 @@ function Header() {
 function Hero() {
   return (
     <section className="relative min-h-screen w-full overflow-hidden px-4 pt-32 pb-24 md:px-8">
-      <ImageFrame
-        ratio="auto"
-        src={latteFlowersPhoto.url}
-        alt="Bloom Boom Café Ambiente"
-        zoom={false}
-        className="absolute inset-0 !h-full !w-full !rounded-none"
-        style={{ aspectRatio: "auto" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/30 to-background/70" />
-      </ImageFrame>
+      {/* Storefront background — the real Bloom Boom entrance */}
+      <div className="absolute inset-0">
+        <img
+          src={storefront.url}
+          alt="Bloom Boom Storefront in Chemnitz"
+          className="h-full w-full object-cover"
+          style={{ objectPosition: "center 40%" }}
+        />
+        {/* Warm cream wash to blend with palette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,248,246,0.55)_0%,rgba(255,248,246,0.75)_60%,rgba(255,248,246,0.9)_100%)]" />
+      </div>
+
       <div className="relative z-10 mx-auto flex min-h-[80vh] max-w-4xl flex-col items-center justify-center text-center">
         <Reveal className="glass rounded-[2.5rem] px-8 py-14 md:px-16 md:py-20 soft-shadow">
           <p className="mb-6 text-xs uppercase tracking-[0.4em] text-foreground/60">
@@ -206,7 +261,7 @@ function Drinks() {
     <section id="drinks" className="px-4 py-40 md:px-8 md:py-56">
       <div className="mx-auto max-w-6xl">
         <Reveal className="mb-24 text-center">
-          <p className="mb-4 text-xs uppercase tracking-[0.4em] text-foreground/60">Chapter I</p>
+          <Eyebrow>Signature Sips</Eyebrow>
           <h2 className="font-serif text-4xl italic md:text-6xl">The Art of Drinks</h2>
           <p className="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-foreground/60 md:text-base">
             Drei Signatures – gemacht mit Zeit, guten Zutaten und einer ordentlichen Portion Liebe.
@@ -239,26 +294,53 @@ function Drinks() {
 }
 
 function MenuSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (openIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenIndex(null);
+      if (e.key === "ArrowRight") setOpenIndex((i) => (i === null ? null : (i + 1) % menuCards.length));
+      if (e.key === "ArrowLeft") setOpenIndex((i) => (i === null ? null : (i - 1 + menuCards.length) % menuCards.length));
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [openIndex]);
+
   return (
     <section id="menu" className="bg-blush/30 px-4 py-40 md:px-8 md:py-56">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mb-20 text-center">
-          <p className="mb-4 text-xs uppercase tracking-[0.4em] text-foreground/60">Chapter II</p>
+          <Eyebrow>Die volle Karte</Eyebrow>
           <h2 className="font-serif text-4xl italic md:text-6xl">Die ganze Speisekarte</h2>
           <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-foreground/60 md:text-base">
             Von Signature Matcha über florale Lattes bis hin zu hausgemachten Limonaden.
-            Für jeden Mood die richtige Tasse.
+            Tippe eine Karte an, um sie in groß zu sehen.
           </p>
         </Reveal>
 
-        <div className="flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-6 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0 lg:grid-cols-5">
+        {/* Mobile: 3 top / 2 bottom grid. Desktop: 5 in a row. */}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-5 lg:gap-6">
           {menuCards.map((m, i) => (
             <Reveal
               key={m.title}
-              delay={i * 90}
-              className="w-[78%] flex-shrink-0 snap-center md:w-auto"
+              delay={i * 80}
+              className={
+                // last odd card on mobile spans both cols to center; on sm+ normal
+                i === 4 ? "col-span-2 sm:col-span-1" : ""
+              }
             >
-              <div className="soft-lift group rounded-[1.75rem] bg-background p-3 soft-shadow">
+              <button
+                type="button"
+                onClick={() => setOpenIndex(i)}
+                className="soft-lift group block w-full cursor-zoom-in rounded-[1.75rem] bg-background p-3 text-left soft-shadow focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-blush/30"
+                aria-label={`${m.title} vergrößern`}
+              >
                 <ImageFrame
                   ratio="3/4"
                   src={m.src}
@@ -271,11 +353,56 @@ function MenuSection() {
                     {m.note}
                   </p>
                 </div>
-              </div>
+              </button>
             </Reveal>
           ))}
         </div>
       </div>
+
+      {/* Lightbox */}
+      {openIndex !== null && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-cocoa/70 p-4 backdrop-blur-md animate-fade-in"
+          onClick={() => setOpenIndex(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <button
+            type="button"
+            aria-label="Schließen"
+            onClick={(e) => { e.stopPropagation(); setOpenIndex(null); }}
+            className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full bg-background/90 text-foreground transition-all duration-300 hover:scale-105 md:right-8 md:top-8"
+          >
+            <X className="h-5 w-5" strokeWidth={1.5} />
+          </button>
+          <button
+            type="button"
+            aria-label="Vorherige"
+            onClick={(e) => { e.stopPropagation(); setOpenIndex((openIndex - 1 + menuCards.length) % menuCards.length); }}
+            className="absolute left-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-background/85 text-foreground transition-all duration-300 hover:scale-105 md:left-8"
+          >
+            <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
+          </button>
+          <button
+            type="button"
+            aria-label="Nächste"
+            onClick={(e) => { e.stopPropagation(); setOpenIndex((openIndex + 1) % menuCards.length); }}
+            className="absolute right-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-background/85 text-foreground transition-all duration-300 hover:scale-105 md:right-8"
+          >
+            <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
+          </button>
+          <div className="relative flex max-h-[88vh] w-full max-w-4xl flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={menuCards[openIndex].src}
+              alt={menuCards[openIndex].title}
+              className="max-h-[80vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl"
+            />
+            <p className="text-center font-serif text-lg italic text-background">
+              {menuCards[openIndex].title}
+            </p>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -290,7 +417,7 @@ function SweetTreats() {
           </div>
         </Reveal>
         <Reveal delay={140} className="md:col-span-5 md:pl-4">
-          <p className="mb-4 text-xs uppercase tracking-[0.4em] text-foreground/60">Chapter III</p>
+          <Eyebrow>Süße Kunststücke</Eyebrow>
           <h2 className="font-serif text-4xl italic leading-tight md:text-6xl">
             Handgemachte <br />Kunstwerke.
           </h2>
@@ -312,14 +439,17 @@ function Gallery() {
   return (
     <section id="gallery" className="px-0 py-40 md:py-56">
       <Reveal className="mb-20 px-6 text-center md:mb-24">
-        <p className="mb-4 text-xs uppercase tracking-[0.4em] text-foreground/60">Chapter IV</p>
+        <Eyebrow>Ein Blick hinein</Eyebrow>
         <h2 className="font-serif text-4xl italic md:text-6xl">Inside the bloom</h2>
+        <p className="mx-auto mt-6 max-w-md text-sm text-foreground/60">
+          Blüten an der Decke, Marmor unter dem Cup — kleine Momente aus unserem Café.
+        </p>
       </Reveal>
       <div className="columns-2 gap-2 px-2 md:columns-3 md:gap-3 md:px-3 lg:columns-4">
         {gallery.map((g, i) => (
           <div key={i} className="mb-2 break-inside-avoid md:mb-3">
             <Reveal delay={(i % 4) * 80}>
-              <ImageFrame ratio={g.ratio} src={g.src} label={g.label} className="!rounded-2xl" />
+              <ImageFrame ratio={g.ratio} src={g.src} label={g.label} alt={g.label} className="!rounded-2xl" />
             </Reveal>
           </div>
         ))}
@@ -330,28 +460,37 @@ function Gallery() {
 
 function Voices() {
   const [i, setI] = useState(0);
+  const total = quotes.length;
+  const prev = () => setI((v) => (v - 1 + total) % total);
+  const next = () => setI((v) => (v + 1) % total);
+
+  // Show 3 cards on desktop, sliding window
+  const visible = [0, 1, 2].map((offset) => quotes[(i + offset) % total]);
+
   return (
     <section className="relative overflow-hidden bg-cream px-4 py-40 md:px-8 md:py-56">
-      {/* soft ornamental blobs */}
       <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-blush/40 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-32 -right-24 h-80 w-80 rounded-full bg-matcha/20 blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl">
-        <Reveal className="mb-20 text-center">
-          <p className="mb-4 text-xs uppercase tracking-[0.4em] text-foreground/60">Chapter V</p>
+        <Reveal className="mb-16 text-center">
+          <Eyebrow>Was Gäste sagen</Eyebrow>
           <h2 className="font-serif text-4xl italic md:text-6xl">Real voices</h2>
           <p className="mx-auto mt-6 max-w-md text-sm text-foreground/60">
-            Was unsere Gäste über Bloom Boom sagen.
+            Kleine Liebesbriefe aus Chemnitz — direkt von Google.
           </p>
         </Reveal>
 
-        {/* desktop: 3 cards */}
-        <div className="hidden gap-6 md:grid md:grid-cols-3">
-          {quotes.map((q, idx) => (
-            <Reveal key={q.name} delay={idx * 120}>
-              <article className="soft-lift group relative flex h-full flex-col rounded-[2rem] bg-background/80 p-10 backdrop-blur-sm soft-shadow">
+        {/* Desktop: 3-card sliding window */}
+        <div className="relative hidden md:block">
+          <div className="grid grid-cols-3 gap-6">
+            {visible.map((q, idx) => (
+              <article
+                key={`${i}-${idx}`}
+                className="soft-shadow group relative flex h-full flex-col rounded-[2rem] bg-background/85 p-10 backdrop-blur-sm transition-all duration-500 animate-fade-in"
+              >
                 <Quote className="h-8 w-8 text-accent" strokeWidth={1} />
-                <p className="mt-6 font-serif text-lg italic leading-relaxed text-foreground/85">
+                <p className="mt-6 font-serif text-base italic leading-relaxed text-foreground/85">
                   &ldquo;{q.text}&rdquo;
                 </p>
                 <div className="mt-8 flex items-center gap-3 border-t border-foreground/10 pt-5">
@@ -364,15 +503,15 @@ function Voices() {
                   </div>
                 </div>
               </article>
-            </Reveal>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* mobile: carousel */}
+        {/* Mobile: 1 card */}
         <div className="md:hidden">
-          <article className="soft-shadow relative flex flex-col rounded-[2rem] bg-background/80 p-8 backdrop-blur-sm">
+          <article className="soft-shadow relative flex flex-col rounded-[2rem] bg-background/85 p-8 backdrop-blur-sm animate-fade-in" key={i}>
             <Quote className="h-7 w-7 text-accent" strokeWidth={1} />
-            <p className="mt-5 font-serif text-lg italic leading-relaxed text-foreground/85">
+            <p className="mt-5 font-serif text-base italic leading-relaxed text-foreground/85">
               &ldquo;{quotes[i].text}&rdquo;
             </p>
             <div className="mt-6 flex items-center gap-3 border-t border-foreground/10 pt-4">
@@ -385,35 +524,41 @@ function Voices() {
               </div>
             </div>
           </article>
-          <div className="mt-8 flex items-center justify-center gap-5">
-            <button
-              onClick={() => setI((i - 1 + quotes.length) % quotes.length)}
-              className="grid h-11 w-11 place-items-center rounded-full glass transition-all duration-300 hover:bg-white/70"
-              aria-label="Previous"
-            >
-              <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
-            </button>
-            <div className="flex gap-2">
-              {quotes.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setI(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${
-                    idx === i ? "w-8 bg-cocoa" : "w-1.5 bg-foreground/25"
-                  }`}
-                  aria-label={`Quote ${idx + 1}`}
-                />
-              ))}
-            </div>
-            <button
-              onClick={() => setI((i + 1) % quotes.length)}
-              className="grid h-11 w-11 place-items-center rounded-full glass transition-all duration-300 hover:bg-white/70"
-              aria-label="Next"
-            >
-              <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
-            </button>
-          </div>
         </div>
+
+        {/* Controls */}
+        <div className="mt-12 flex items-center justify-center gap-6">
+          <button
+            onClick={prev}
+            className="grid h-12 w-12 place-items-center rounded-full bg-background/90 soft-shadow transition-all duration-300 hover:scale-105 hover:bg-background"
+            aria-label="Vorherige Bewertung"
+          >
+            <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
+          </button>
+          <div className="flex items-center gap-2">
+            {quotes.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setI(idx)}
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  idx === i ? "w-8 bg-cocoa" : "w-1.5 bg-foreground/25 hover:bg-foreground/40"
+                }`}
+                aria-label={`Bewertung ${idx + 1}`}
+              />
+            ))}
+          </div>
+          <button
+            onClick={next}
+            className="grid h-12 w-12 place-items-center rounded-full bg-background/90 soft-shadow transition-all duration-300 hover:scale-105 hover:bg-background"
+            aria-label="Nächste Bewertung"
+          >
+            <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
+          </button>
+        </div>
+
+        <p className="mt-6 text-center text-[10px] uppercase tracking-[0.3em] text-foreground/50">
+          {i + 1} / {total} · Alle {total} Stimmen
+        </p>
       </div>
     </section>
   );
@@ -424,7 +569,7 @@ function Visit() {
     <section id="visit" className="px-4 py-40 md:px-8 md:py-56">
       <div className="mx-auto max-w-5xl">
         <Reveal className="mb-20 text-center">
-          <p className="mb-4 text-xs uppercase tracking-[0.4em] text-foreground/60">Come by</p>
+          <Eyebrow>Komm vorbei</Eyebrow>
           <h2 className="font-serif text-4xl italic md:text-6xl">
             Komm auf einen Matcha vorbei.
           </h2>
@@ -466,18 +611,26 @@ function Visit() {
                   <Navigation className="h-4 w-4" strokeWidth={1.5} /> Route anzeigen
                 </a>
                 <a
-                  href="https://www.instagram.com/bloom.boom.chemnitz"
+                  href={INSTAGRAM_URL}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-foreground/20 px-7 py-4 text-xs uppercase tracking-[0.24em] text-foreground transition-all duration-300 hover:bg-foreground/5"
                 >
-                  <Instagram className="h-4 w-4" strokeWidth={1.5} /> Folge uns
+                  <Instagram className="h-4 w-4" strokeWidth={1.5} /> Instagram
+                </a>
+                <a
+                  href={TIKTOK_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-foreground/20 px-7 py-4 text-xs uppercase tracking-[0.24em] text-foreground transition-all duration-300 hover:bg-foreground/5"
+                >
+                  <TikTokIcon className="h-4 w-4" /> TikTok
                 </a>
               </div>
             </div>
 
             <div className="soft-lift rounded-3xl">
-              <ImageFrame ratio="4/5" src={cupPhoto.url} alt="Bloom Boom Coffee to go" />
+              <ImageFrame ratio="4/5" src={storefront.url} alt="Bloom Boom Eingang mit Blüten" objectPosition="center 40%" />
             </div>
           </div>
         </Reveal>
@@ -494,14 +647,26 @@ function Footer() {
         <p className="text-[11px] uppercase tracking-[0.3em] text-foreground/50">
           © {new Date().getFullYear()} · Made with soft hands in Chemnitz
         </p>
-        <a
-          href="https://www.instagram.com/bloom.boom.chemnitz"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-foreground/60 transition-colors duration-300 hover:text-foreground"
-        >
-          <Instagram className="h-4 w-4" strokeWidth={1.5} /> @bloom.boom.chemnitz
-        </a>
+        <div className="flex items-center gap-5 text-foreground/60">
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Instagram"
+            className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] transition-colors duration-300 hover:text-foreground"
+          >
+            <Instagram className="h-4 w-4" strokeWidth={1.5} /> Instagram
+          </a>
+          <a
+            href={TIKTOK_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="TikTok"
+            className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] transition-colors duration-300 hover:text-foreground"
+          >
+            <TikTokIcon className="h-4 w-4" /> TikTok
+          </a>
+        </div>
       </div>
     </footer>
   );
