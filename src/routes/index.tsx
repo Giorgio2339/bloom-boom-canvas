@@ -156,6 +156,7 @@ function Landing() {
       <MenuSection />
       <SweetTreats />
       <Gallery />
+      <SignatureBand />
       <Voices />
       <Visit />
       <Footer />
@@ -411,27 +412,49 @@ function MenuSection() {
 function SweetTreats() {
   return (
     <section id="treats" className="bg-cream px-4 py-40 md:px-8 md:py-56">
-      <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12 md:items-center md:gap-24">
+      <div className="mx-auto grid max-w-6xl gap-16 md:grid-cols-12 md:items-center md:gap-20">
         <Reveal className="md:col-span-7">
-          <div className="soft-lift rounded-3xl">
-            <ImageFrame ratio="1/1" src={creamMatchaPhoto.url} alt="Matcha mit Sahne & Streuseln" />
+          <div className="grid grid-cols-5 items-end gap-4 md:gap-6">
+            <div className="soft-lift col-span-3 rounded-3xl">
+              <ImageFrame ratio="1/1" src={creamMatchaPhoto.url} alt="Matcha mit Sahne & Streuseln" />
+            </div>
+            <div className="soft-lift col-span-2 rounded-3xl md:-mb-16">
+              <ImageFrame ratio="3/4" src={galleryTreats.url} alt="Süße Tafel mit Gebäck" />
+            </div>
           </div>
         </Reveal>
-        <Reveal delay={140} className="md:col-span-5 md:pl-4">
+        <Reveal delay={140} className="md:col-span-5 md:pl-2">
           <Eyebrow>Süße Kunststücke</Eyebrow>
-          <h2 className="font-serif text-4xl italic leading-tight md:text-6xl">
+          <h2 className="font-serif text-5xl italic leading-tight md:text-6xl">
             Handgemachte <br />Kunstwerke.
           </h2>
-          <p className="mt-8 text-sm leading-relaxed text-foreground/70 md:text-base">
+          <p className="mt-8 text-base leading-relaxed text-foreground/75 md:text-lg">
             Jedes Detail ist pure Liebe. Probier unser berüchtigtes{" "}
             <em className="italic">Matcha Strawberry Tiramisu</em> (3,00 €) oder frische Mochi.
             Fast zu schön, um sie zu essen.
+          </p>
+          <p className="mt-6 text-base leading-relaxed text-foreground/60 md:text-lg">
+            Alles entsteht in kleinen Chargen bei uns – gebacken am Morgen, hübsch angerichtet
+            am Nachmittag, weg noch vor dem Abend.
           </p>
           <p className="mt-8 text-xs uppercase tracking-[0.3em] text-foreground/50">
             Für einen schmalen Taler – täglich frisch.
           </p>
         </Reveal>
       </div>
+    </section>
+  );
+}
+
+function SignatureBand() {
+  return (
+    <section className="w-full bg-cocoa px-6 py-32 md:py-44">
+      <Reveal className="mx-auto max-w-3xl text-center">
+        <p className="font-serif text-2xl italic leading-relaxed text-background md:text-4xl">
+          &ldquo;Ein kleiner Ort zum Weichwerden – wo jeder Schluck aussieht wie ein
+          Frühlingstag.&rdquo;
+        </p>
+      </Reveal>
     </section>
   );
 }
@@ -457,6 +480,15 @@ function Gallery() {
       </div>
     </section>
   );
+}
+
+function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w.charAt(0).toUpperCase())
+    .join("");
 }
 
 function Voices() {
@@ -495,8 +527,8 @@ function Voices() {
                   &ldquo;{q.text}&rdquo;
                 </p>
                 <div className="mt-8 flex items-center gap-3 border-t border-foreground/10 pt-5">
-                  <div className="grid h-10 w-10 place-items-center rounded-full bg-accent font-serif text-sm italic text-accent-foreground">
-                    {q.name.charAt(0)}
+                  <div className="grid h-11 w-11 place-items-center rounded-full bg-blush font-serif text-xs italic tracking-wide text-cocoa ring-1 ring-matcha/40">
+                    {initials(q.name)}
                   </div>
                   <div className="text-left">
                     <p className="font-serif text-sm italic">{q.name}</p>
@@ -516,8 +548,8 @@ function Voices() {
               &ldquo;{quotes[i].text}&rdquo;
             </p>
             <div className="mt-6 flex items-center gap-3 border-t border-foreground/10 pt-4">
-              <div className="grid h-9 w-9 place-items-center rounded-full bg-accent font-serif text-sm italic text-accent-foreground">
-                {quotes[i].name.charAt(0)}
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-blush font-serif text-xs italic tracking-wide text-cocoa ring-1 ring-matcha/40">
+                {initials(quotes[i].name)}
               </div>
               <div className="text-left">
                 <p className="font-serif text-sm italic">{quotes[i].name}</p>
