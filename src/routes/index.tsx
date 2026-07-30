@@ -244,14 +244,15 @@ function TrustBar() {
   const items = ["Handmade with Love", "Frische Zutaten", "Aesthetic Vibes only", "Made in Chemnitz"];
   return (
     <section className="border-y border-foreground/5 bg-background px-4 py-6">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-8 gap-y-2 text-center">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-5 gap-y-2 text-center md:gap-x-8">
         {items.map((t, i) => (
-          <span key={t} className="flex items-center gap-8 text-[11px] uppercase tracking-[0.32em] text-foreground/55">
+          <span key={t} className="flex items-center gap-5 whitespace-nowrap text-[9.5px] uppercase tracking-[0.24em] text-foreground/55 sm:text-[10px] sm:tracking-[0.28em] md:gap-8 md:text-[11px] md:tracking-[0.32em]">
             {t}
             {i < items.length - 1 && <span className="text-accent">✿</span>}
           </span>
         ))}
       </div>
+
     </section>
   );
 }
