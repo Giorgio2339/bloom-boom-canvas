@@ -231,7 +231,7 @@ function Hero() {
               rel="noreferrer"
               className="rounded-full border border-foreground/20 px-8 py-4 text-xs uppercase tracking-[0.24em] text-foreground transition-all duration-300 hover:bg-foreground/5"
             >
-              Find us
+              So findest du uns
             </a>
           </div>
         </Reveal>
