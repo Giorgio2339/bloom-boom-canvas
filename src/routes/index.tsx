@@ -156,6 +156,7 @@ function Landing() {
       <MenuSection />
       <SweetTreats />
       <Gallery />
+      <SignatureBand />
       <Voices />
       <Visit />
       <Footer />
