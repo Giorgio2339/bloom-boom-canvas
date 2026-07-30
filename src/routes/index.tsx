@@ -482,6 +482,15 @@ function Gallery() {
   );
 }
 
+function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w.charAt(0).toUpperCase())
+    .join("");
+}
+
 function Voices() {
   const [i, setI] = useState(0);
   const total = quotes.length;
@@ -518,8 +527,8 @@ function Voices() {
                   &ldquo;{q.text}&rdquo;
                 </p>
                 <div className="mt-8 flex items-center gap-3 border-t border-foreground/10 pt-5">
-                  <div className="grid h-10 w-10 place-items-center rounded-full bg-accent font-serif text-sm italic text-accent-foreground">
-                    {q.name.charAt(0)}
+                  <div className="grid h-11 w-11 place-items-center rounded-full bg-blush font-serif text-xs italic tracking-wide text-cocoa ring-1 ring-matcha/40">
+                    {initials(q.name)}
                   </div>
                   <div className="text-left">
                     <p className="font-serif text-sm italic">{q.name}</p>
@@ -539,8 +548,8 @@ function Voices() {
               &ldquo;{quotes[i].text}&rdquo;
             </p>
             <div className="mt-6 flex items-center gap-3 border-t border-foreground/10 pt-4">
-              <div className="grid h-9 w-9 place-items-center rounded-full bg-accent font-serif text-sm italic text-accent-foreground">
-                {quotes[i].name.charAt(0)}
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-blush font-serif text-xs italic tracking-wide text-cocoa ring-1 ring-matcha/40">
+                {initials(quotes[i].name)}
               </div>
               <div className="text-left">
                 <p className="font-serif text-sm italic">{quotes[i].name}</p>
