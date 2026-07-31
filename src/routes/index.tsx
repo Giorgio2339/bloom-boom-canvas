@@ -3,24 +3,24 @@ import { ImageFrame } from "@/components/ImageFrame";
 import { Reveal } from "@/components/Reveal";
 import { MapPin, Clock, Instagram, ChevronLeft, ChevronRight, Quote, Navigation, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import logoAsset from "@/assets/bloom-boom-logo.png.asset.json";
+const logoAsset = { url: "/images/bloom-boom-logo.png" };
 
-import matchaMenu from "@/assets/menu/matcha.jpg.asset.json";
-import lemonadesMenu from "@/assets/menu/lemonades.jpg.asset.json";
-import icedLattesMenu from "@/assets/menu/iced-lattes.jpg.asset.json";
-import mojitoMenu from "@/assets/menu/mojito.jpg.asset.json";
-import specialMenu from "@/assets/menu/special.png.asset.json";
+const matchaMenu = { url: "/images/matcha.jpg" };
+const lemonadesMenu = { url: "/images/lemonades.jpg" };
+const icedLattesMenu = { url: "/images/iced-lattes.jpg" };
+const mojitoMenu = { url: "/images/mojito.jpg" };
+const specialMenu = { url: "/images/special.png" };
 
-import cupPhoto from "@/assets/photos/cup.png.asset.json";
-import creamMatchaPhoto from "@/assets/photos/cream-matcha.png.asset.json";
-import latteFlowersPhoto from "@/assets/photos/latte-flowers.png.asset.json";
-import pinkMatchaPhoto from "@/assets/photos/pink-matcha.png.asset.json";
+const cupPhoto = { url: "/images/cup.png" };
+const creamMatchaPhoto = { url: "/images/cream-matcha.png" };
+const latteFlowersPhoto = { url: "/images/latte-flowers.png" };
+const pinkMatchaPhoto = { url: "/images/pink-matcha.png" };
 
-import galleryTreats from "@/assets/photos/gallery-treats.png.asset.json";
-import galleryMatchaHand from "@/assets/photos/gallery-matcha-hand.png.asset.json";
-import galleryIcedFlowers from "@/assets/photos/gallery-iced-flowers.png.asset.json";
-import galleryPinkDrink from "@/assets/photos/gallery-pink-drink.png.asset.json";
-import storefront from "@/assets/photos/storefront.png.asset.json";
+const galleryTreats = { url: "/images/gallery-treats.png" };
+const galleryMatchaHand = { url: "/images/gallery-matcha-hand.png" };
+const galleryIcedFlowers = { url: "/images/gallery-iced-flowers.png" };
+const galleryPinkDrink = { url: "/images/gallery-pink-drink.png" };
+const storefront = { url: "/images/storefront.png" };
 
 export const Route = createFileRoute("/")({
   component: Landing,
